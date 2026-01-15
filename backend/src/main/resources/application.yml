@@ -10,8 +10,8 @@ spring:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:starterdb}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     # English: Database credentials.
     # Italiano: Credenziali database.
-    username: ${DB_USER:starter}
-    password: ${DB_PASSWORD:starter}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
   jpa:
     hibernate:
       # English: Validate schema against entities.
