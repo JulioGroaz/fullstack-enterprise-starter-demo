@@ -19,6 +19,12 @@ Generic fullstack monorepo template with Spring Boot backend and Angular fronten
 ```
 CREATE DATABASE starterdb;
 ```
+Optional: create a dedicated DB user (replace values):
+```
+CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'app1234';
+GRANT ALL PRIVILEGES ON starterdb.* TO 'appuser'@'localhost';
+FLUSH PRIVILEGES;
+```
 3) Run the schema script (creates tables and roles):
 ```
 mariadb -u root -p starterdb < backend/src/main/resources/db/migration/V1__init.sql
@@ -38,6 +44,8 @@ SPRING_JPA_HIBERNATE_DDL_AUTO=none
 PowerShell:
 ```
 cd backend
+$env:DB_USER = "appuser"         # or "root"
+$env:DB_PASSWORD = "app1234"     # or "root"
 $env:JWT_SECRET = "devsecretchangeitdevsecretchangeit"
 .\mvnw.cmd spring-boot:run
 ```
@@ -45,7 +53,7 @@ $env:JWT_SECRET = "devsecretchangeitdevsecretchangeit"
 macOS/Linux:
 ```
 cd backend
-JWT_SECRET="devsecretchangeitdevsecretchangeit" ./mvnw spring-boot:run
+DB_USER="appuser" DB_PASSWORD="app1234" JWT_SECRET="devsecretchangeitdevsecretchangeit" ./mvnw spring-boot:run
 ```
 
 ### Environment variables
@@ -63,6 +71,13 @@ JWT_SECRET="devsecretchangeitdevsecretchangeit" ./mvnw spring-boot:run
 - `SPRING_JPA_HIBERNATE_DDL_AUTO` (optional, default `validate`, set `none` to skip validation)
 - `SPRING_JPA_DATABASE_PLATFORM` (optional, MariaDB: `org.hibernate.dialect.MariaDBDialect`)
 - `SPRING_JPA_PROPERTIES_HIBERNATE_BOOT_ALLOW_JDBC_METADATA_ACCESS` (optional, set `false` if metadata errors)
+
+Example values (replace with your own credentials):
+```
+DB_USER=appuser
+DB_PASSWORD=app1234
+JWT_SECRET=devsecretchangeitdevsecretchangeit
+```
 
 ### Admin seed (optional)
 Set these variables before startup to create a default admin user on boot:
