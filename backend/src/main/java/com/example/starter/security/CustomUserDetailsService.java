@@ -27,4 +27,14 @@ public class CustomUserDetailsService implements UserDetailsService {
       .map(AppUserDetails::fromUser)
       .orElseThrow(() -> new UsernameNotFoundException("User not found"));
   }
+
+  /**
+   * English: Finds a user by id and maps to UserDetails.
+   * Italiano: Trova un utente per id e lo mappa in UserDetails.
+   */
+  public AppUserDetails loadUserById(Long id) {
+    return userRepository.findById(id)
+      .map(AppUserDetails::fromUser)
+      .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+  }
 }

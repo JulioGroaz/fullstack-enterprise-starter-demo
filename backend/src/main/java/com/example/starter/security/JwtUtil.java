@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -33,7 +32,8 @@ public class JwtUtil {
     Instant expiry = now.plusSeconds(properties.getJwt().getExpirationMinutes() * 60);
 
     return Jwts.builder()
-      .setSubject(userDetails.getUsername())
+      .setSubject(String.valueOf(userDetails.getId()))
+      .claim("email", userDetails.getUsername())
       .claim("roles", userDetails.getRoles())
       .setIssuedAt(Date.from(now))
       .setExpiration(Date.from(expiry))
@@ -42,19 +42,19 @@ public class JwtUtil {
   }
 
   /**
-   * English: Extracts the username (email) from the token.
-   * Italiano: Estrae lo username (email) dal token.
+   * English: Extracts the user id from the token.
+   * Italiano: Estrae lo user id dal token.
    */
-  public String extractUsername(String token) {
-    return getAllClaims(token).getSubject();
+  public Long extractUserId(String token) {
+    return Long.parseLong(getAllClaims(token).getSubject());
   }
 
   /**
    * English: Validates token ownership and expiration.
    * Italiano: Valida proprieta del token e scadenza.
    */
-  public boolean isTokenValid(String token, UserDetails userDetails) {
-    return userDetails.getUsername().equals(extractUsername(token)) && !isTokenExpired(token);
+  public boolean isTokenValid(String token, AppUserDetails userDetails) {
+    return userDetails.getId().equals(extractUserId(token)) && !isTokenExpired(token);
   }
 
   /**

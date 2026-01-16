@@ -74,6 +74,9 @@ public class AppUserDetails implements UserDetails {
   public String getUsername() {
     return email;
   }
+  public Long getId() {
+      return id;
+  }
 
   /**
    * English: Accounts do not expire in this starter.
